@@ -95,6 +95,17 @@ body.editing .check{visibility:hidden}
 .backup .row{display:flex;gap:8px}
 .backup .row button{flex:1;height:46px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:600 15px "Barlow",sans-serif}
 .backup .row button:active{transform:scale(.98)}
+.guide{margin-top:22px;border-top:1px solid var(--line);padding-top:14px}
+.guide>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  font:700 22px "Barlow Condensed","Arial Narrow",sans-serif;color:var(--ink)}
+.guide>summary::-webkit-details-marker{display:none}
+.guide>summary::after{content:"+";font:500 26px "Barlow",sans-serif;color:var(--muted);line-height:1}
+.guide[open]>summary::after{content:"\2212"}
+.guide h3{font:600 16px "Barlow",sans-serif;margin:16px 0 4px;color:var(--ink)}
+.guide p{margin:0 0 6px;font-size:15px;color:var(--muted);line-height:1.45}
+.guide ol{margin:0;padding-left:20px;font-size:15px;color:var(--muted);line-height:1.5}
+.guide ol li{padding:1px 0}
+.guide b{color:var(--ink);font-weight:600}
 .sync{font-size:12px;color:var(--muted);text-align:center;margin-top:18px}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 </style>
@@ -125,6 +136,50 @@ body.editing .check{visibility:hidden}
     </div>
     <input type="file" id="impFile" accept="application/json,.json" hidden>
   </section>
+
+  <details class="guide">
+    <summary>Kuidas kasutada?</summary>
+
+    <h3>1. Harjutuste lisamine</h3>
+    <p>Kirjuta lahtrisse <b>Uus harjutus</b> nimi (nt Kükk) ja vajuta <b>Lisa</b>. Lisa kõik harjutused, mida trennis teed — need jäävad alles ka järgmiseks korraks.</p>
+
+    <h3>2. Trenni tegemine</h3>
+    <ol>
+      <li>Iga harjutuse all on kaks lugejat: <b>kg</b> ja <b>kordust</b>. Muuda neid − ja + nuppudega või vajuta numbrile ja kirjuta uus.</li>
+      <li>Kui harjutus on tehtud, vajuta paremal olevat ringi — rida läheb roheliseks ja ülal olev loendur liigub edasi.</li>
+      <li>Kui oled valmis, vajuta all <b>Trenn tehtud</b>. Trenn läheb ajalukku ja linnukesed nullitakse, aga kaal ja kordused jäävad järgmiseks korraks meelde.</li>
+    </ol>
+
+    <h3>3. Harjutuste muutmine</h3>
+    <p>Vajuta üleval paremal <b>Muuda</b>. Iga harjutuse alla tekivad nupud <b>Üles</b> (järjekorra muutmiseks), <b>Nimeta</b> ja <b>Kustuta</b>. Lõpetuseks vajuta <b>Valmis</b>.</p>
+
+    <h3>4. Varasemad trennid</h3>
+    <p>Iga trenn avaneb klõpsuga — näed, mis harjutused, mis kaaluga ja mitu kordust tehtud said. Trenni all on <b>Kustuta see trenn</b> ja pealkirja kõrval <b>Kustuta kõik</b>.</p>
+
+    <h3>5. Avaekraanile lisamine</h3>
+    <p><b>iPhone:</b> ava see leht Safaris → jaga-nupp (ruut noolega) → <b>Lisa avaekraanile</b>.<br>
+    <b>Android:</b> ava Chrome'is → menüü (⋮) → <b>Lisa avaekraanile</b>.</p>
+
+    <h3>6. Varukoopia tegemine</h3>
+    <ol>
+      <li>Vajuta <b>Ekspordi</b>. Salvestub fail nimega <b>trenn-varukoopia-KUUPÄEV.json</b>.</li>
+      <li>iPhone'is läheb fail rakendusse <b>Failid</b> (kaust Allalaaditud), Androidis kausta <b>Downloads</b>.</li>
+      <li>Tõsta see fail sealt <b>iCloud Drive'i</b> või <b>Google Drive'i</b> — muidu kaob see koos telefoniga.</li>
+      <li>Tee seda aeg-ajalt, näiteks kord kuus või pärast mõnda head trenni.</li>
+    </ol>
+
+    <h3>7. Taastamine uues telefonis</h3>
+    <ol>
+      <li>Ava uues telefonis sama link.</li>
+      <li>Vajuta <b>Impordi</b> ja vali varukoopia fail (iCloud Drive'ist või Drive'ist).</li>
+      <li>Näidatakse, mitu harjutust ja trenni failis on. Kinnita — praegune sisu asendatakse varukoopiaga.</li>
+    </ol>
+
+    <h3>Mida tasub teada</h3>
+    <p>Trennid on salvestatud ainult selle seadme brauserisse. Need ei liigu seadmete vahel ega taastu iseenesest, kui telefon kaob — ainus turvavõrk on varukoopia. Kui kustutad brauseri andmed, kustuvad ka trennid.</p>
+    <p>Sama link avaneb igaühel, aga igaüks näeb ainult oma andmeid — sinu trenne keegi teine ei näe.</p>
+  </details>
+
   <div class="sync" id="sync"></div>
 </div>
 <div class="finish"><button id="finishBtn">Trenn tehtud</button></div>
