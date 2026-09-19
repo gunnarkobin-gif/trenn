@@ -41,8 +41,17 @@ h1{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:800;font
 .progress small{display:block;font-family:"Barlow",sans-serif;font-weight:500;font-size:12px;color:var(--muted)}
 .bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:16px}
 .bar i{display:block;height:100%;width:0;background:var(--done);transition:width .3s}
-.toolbar{display:flex;justify-content:flex-end;margin-bottom:8px}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
 .link{background:none;border:0;color:var(--plate);font:600 15px "Barlow",sans-serif;padding:6px 2px}
+.switch{display:inline-flex;align-items:center;gap:8px;font:500 14px "Barlow",sans-serif;color:var(--muted);
+  cursor:pointer;padding:6px 2px;user-select:none}
+.switch input{position:absolute;opacity:0;width:0;height:0}
+.track{flex:0 0 auto;width:38px;height:22px;border-radius:11px;background:var(--line);position:relative;transition:background .2s}
+.knob{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:var(--card);
+  box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .2s}
+.switch input:checked + .track{background:var(--done)}
+.switch input:checked + .track .knob{transform:translateX(16px)}
+.switch input:focus-visible + .track{outline:2px solid var(--plate);outline-offset:2px}
 ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
 li.ex{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 12px 12px 14px;
   display:grid;grid-template-columns:1fr auto;gap:10px 12px;align-items:center;transition:background .2s,border-color .2s}
@@ -145,7 +154,14 @@ body.editing .check{visibility:hidden}
     <div class="progress" id="prog">0/0<small>tehtud</small></div>
   </header>
   <div class="bar"><i id="barfill"></i></div>
-  <div class="toolbar"><button class="link" id="editBtn">Muuda</button></div>
+  <div class="toolbar">
+    <label class="switch">
+      <input type="checkbox" id="hideDone">
+      <span class="track"><span class="knob"></span></span>
+      <span>Peida tehtud</span>
+    </label>
+    <button class="link" id="editBtn">Muuda</button>
+  </div>
   <ul id="list"></ul>
   <section id="doneBox"></section>
   <form class="add" id="addForm" autocomplete="off">
@@ -173,22 +189,25 @@ body.editing .check{visibility:hidden}
     <ol>
       <li>Iga harjutuse all on ühes reas kolm lugejat: <b>kg</b>, <b>kordust</b> ja <b>seeriat</b>. Muuda neid − ja + nuppudega või vajuta numbrile ja kirjuta uus. Uuel harjutusel on algväärtus 3 seeriat, 10 kordust ja 20 kg — muuda need enda järgi ja need jäävad nii meelde.</li>
       <li>Kui harjutus on tehtud, vajuta paremal olevat ringi. Harjutus kaob nimekirjast ära, nii et alles jääb ainult see, mis veel teha on.</li>
-      <li>Tehtud harjutused kogunevad nimekirja alla ribale <b>Tehtud</b> (sulgudes on arv). Vajuta ribale, et need lahti teha — kõrval on kirjas <b>seeriad × kordused × kaal</b>, näiteks 3 × 10 × 20 kg.</li>
+      <li>Ülal paremal näitab loendur kogu aeg, mitu harjutust on tehtud — näiteks <b>2/5 tehtud</b>. Peidetud harjutused kogunevad nimekirja alla ribale <b>Tehtud ja peidetud</b>, mille kõrval on nende arv. Vajuta ribale, et need lahti teha — iga rea juures on <b>seeriad × kordused × kaal</b>, näiteks 3 × 10 × 20 kg.</li>
       <li>Kui vajutasid kogemata või tahad harjutust korrata, vajuta selle juures <b>Võta tagasi</b> — harjutus tuleb nimekirja tagasi.</li>
       <li>Kui oled valmis, vajuta all <b>Trenn tehtud</b>. Trenn läheb ajalukku ja kõik harjutused tulevad järgmiseks korraks nimekirja tagasi — kaal ja kordused jäävad meelde.</li>
     </ol>
 
-    <h3>3. Harjutuste muutmine</h3>
+    <h3>3. Kas peita tehtud harjutused?</h3>
+    <p>Ülal vasakul on lüliti <b>Peida tehtud</b>. Sisse lülitatuna (nii on algselt) kaovad tehtud harjutused nimekirjast ja kogunevad ribale <b>Tehtud ja peidetud</b>. Välja lülitatuna jäävad kõik harjutused nimekirja alles, tehtud lihtsalt roheliseks märgituna. Valik jääb meelde ka järgmiseks korraks.</p>
+
+    <h3>4. Harjutuste muutmine</h3>
     <p>Vajuta üleval paremal <b>Muuda</b>. Iga harjutuse alla tekivad nupud <b>Üles</b> (järjekorra muutmiseks), <b>Nimeta</b> ja <b>Kustuta</b>. Muutmise ajal on näha kõik harjutused, ka juba tehtud, nii et saad ka neid parandada. Lõpetuseks vajuta <b>Valmis</b>.</p>
 
-    <h3>4. Varasemad trennid</h3>
+    <h3>5. Varasemad trennid</h3>
     <p>Iga trenn avaneb klõpsuga — näed, mis harjutused tehtud said, kujul <b>seeriad × kordused × kaal</b> (vanematel trennidel, mis on tehtud enne seeriate lisamist, on ainult kordused ja kaal). Trenni all on <b>Kustuta see trenn</b> ja pealkirja kõrval <b>Kustuta kõik</b>.</p>
 
-    <h3>5. Avaekraanile lisamine</h3>
+    <h3>6. Avaekraanile lisamine</h3>
     <p><b>iPhone:</b> ava see leht Safaris → jaga-nupp (ruut noolega) → <b>Lisa avaekraanile</b>.<br>
     <b>Android:</b> ava Chrome'is → menüü (⋮) → <b>Lisa avaekraanile</b>.</p>
 
-    <h3>6. Varukoopia tegemine</h3>
+    <h3>7. Varukoopia tegemine</h3>
     <ol>
       <li>Vajuta <b>Ekspordi</b>. Salvestub fail nimega <b>trenn-varukoopia-KUUPÄEV.json</b>.</li>
       <li>iPhone'is läheb fail rakendusse <b>Failid</b> (kaust Allalaaditud), Androidis kausta <b>Downloads</b>.</li>
@@ -196,7 +215,7 @@ body.editing .check{visibility:hidden}
       <li>Tee seda aeg-ajalt, näiteks kord kuus või pärast mõnda head trenni.</li>
     </ol>
 
-    <h3>7. Taastamine uues telefonis</h3>
+    <h3>8. Taastamine uues telefonis</h3>
     <ol>
       <li>Ava uues telefonis sama link.</li>
       <li>Vajuta <b>Impordi</b> ja vali varukoopia fail (iCloud Drive'ist või Drive'ist).</li>
@@ -215,7 +234,7 @@ body.editing .check{visibility:hidden}
 
 <script>
 const LS_KEY = "trenn-state-v1";
-let state = { exercises: [], done: {}, log: [] };
+let state = { exercises: [], done: {}, log: [], hideDone: true };
 let dbRef = null, saveTimer = null;
 
 const $ = s => document.querySelector(s);
@@ -234,6 +253,7 @@ function migrate(s){
   (s && s.exercises || []).forEach(e => {
     if (typeof e.sets !== "number" || !(e.sets > 0)) e.sets = DEFAULT_SETS;
   });
+  if (s && typeof s.hideDone !== "boolean") s.hideDone = true;
   return s;
 }
 
@@ -258,7 +278,9 @@ function render(){
   const list = $("#list"); list.innerHTML = "";
   const ex = state.exercises;
   const editing = document.body.classList.contains("editing");
-  const visible = editing ? ex : ex.filter(e => !state.done[e.id]);
+  const hiding = state.hideDone !== false && !editing;
+  $("#hideDone").checked = state.hideDone !== false;
+  const visible = hiding ? ex.filter(e => !state.done[e.id]) : ex;
   if (!ex.length){
     list.innerHTML = '<li class="empty">Lisa esimene harjutus allpool. Kaal ja kordused jäävad meelde järgmiseks korraks.</li>';
   } else if (!visible.length){
@@ -347,10 +369,10 @@ function render(){
   const doneEx = ex.filter(e => state.done[e.id]);
   const box = $("#doneBox");
   box.innerHTML = "";
-  if (doneEx.length && !editing){
+  if (doneEx.length && hiding){
     const det = document.createElement("details");
     det.className = "donelist";
-    det.innerHTML = `<summary>Tehtud<span>${doneEx.length}</span></summary><ul class="donerows"></ul>`;
+    det.innerHTML = `<summary>Tehtud ja peidetud<span>${doneEx.length}</span></summary><ul class="donerows"></ul>`;
     const dul = det.querySelector("ul");
     doneEx.forEach(e => {
       const li = document.createElement("li");
@@ -405,6 +427,10 @@ $("#addForm").onsubmit = ev => {
   save(); render();
   toast("Lisatud: " + n);
 };
+$("#hideDone").onchange = ev => {
+  state.hideDone = ev.target.checked;
+  save(); render();
+};
 $("#editBtn").onclick = () => {
   const on = document.body.classList.toggle("editing");
   $("#editBtn").textContent = on ? "Valmis" : "Muuda";
@@ -447,7 +473,8 @@ $("#impFile").onchange = async ev => {
     state = {
       exercises: s.exercises,
       done: (s.done && typeof s.done === "object") ? s.done : {},
-      log: s.log
+      log: s.log,
+      hideDone: s.hideDone
     };
     migrate(state);
     save(); render();
@@ -472,7 +499,7 @@ $("#impFile").onchange = async ev => {
     const snap = await dbRef.get();
     if (snap.exists) {
       const remote = snap.data();
-      state = { exercises: remote.exercises || [], done: remote.done || {}, log: remote.log || [] };
+      state = { exercises: remote.exercises || [], done: remote.done || {}, log: remote.log || [], hideDone: remote.hideDone };
       state = migrate(JSON.parse(JSON.stringify(state)));
       try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e){}
       render();
