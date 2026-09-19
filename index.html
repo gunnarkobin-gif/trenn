@@ -53,22 +53,26 @@ li.ex.done .name{color:var(--done)}
 .check svg{width:24px;height:24px;stroke:transparent;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
 li.ex.done .check{background:var(--done);border-color:var(--done)}
 li.ex.done .check svg{stroke:#fff}
-.controls{grid-column:1 / -1;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:8px}
+.controls{grid-column:1 / -1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .ctl{background:var(--step);border-radius:10px;padding:5px 2px 3px}
 .lbl{display:block;text-align:center;font-size:11px;line-height:1;color:var(--muted);margin-bottom:4px;
   white-space:nowrap;overflow:hidden}
 .stepper{display:flex;align-items:center}
-.stepper button{flex:0 0 26px;height:42px;border:0;border-radius:8px;background:var(--card);color:var(--ink);
+.stepper button{flex:0 0 24px;height:42px;border:0;border-radius:8px;background:var(--card);color:var(--ink);
   font:600 19px "Barlow",sans-serif;line-height:1;padding:0}
 .stepper button:active{transform:scale(.92)}
 .stepper input{flex:1 1 auto;width:100%;min-width:0;border:0;background:transparent;color:var(--ink);text-align:center;
   font:700 19px "Barlow Condensed","Arial Narrow",sans-serif;padding:0;line-height:1}
+.stepper input.sm{font-size:16px}
+.stepper input.xs{font-size:14px}
 .stepper input:focus{outline:2px solid var(--plate);border-radius:6px}
 @media (max-width:344px){
   .controls{gap:6px}
   .ctl{padding:4px 1px 2px}
-  .stepper button{flex:0 0 23px;height:40px;font-size:17px}
+  .stepper button{flex:0 0 21px;height:40px;font-size:17px}
   .stepper input{font-size:17px}
+  .stepper input.sm{font-size:14px}
+  .stepper input.xs{font-size:12px}
   .lbl{font-size:10px;margin-bottom:3px}
 }
 .del{grid-column:1 / -1;display:none;justify-content:space-between;gap:8px}
@@ -221,6 +225,11 @@ const parseNum = s => { const n = parseFloat(String(s).replace(",", ".")); retur
 const fmtDate = iso => new Date(iso).toLocaleDateString("et-EE", { weekday: "short", day: "numeric", month: "long" });
 const fmtSet = it => (it.sets ? it.sets + " × " : "") + it.reps + " × " + fmtKg(it.weight) + " kg";
 const DEFAULT_SETS = 3;
+function fitNum(inp){
+  const n = String(inp.value).length;
+  inp.classList.toggle("sm", n >= 5 && n < 7);
+  inp.classList.toggle("xs", n >= 7);
+}
 function migrate(s){
   (s && s.exercises || []).forEach(e => {
     if (typeof e.sets !== "number" || !(e.sets > 0)) e.sets = DEFAULT_SETS;
@@ -297,6 +306,7 @@ function render(){
     li.querySelector('input[data-k="weight"]').value = fmtKg(e.weight);
     li.querySelector('input[data-k="reps"]').value = e.reps;
     li.querySelector('input[data-k="sets"]').value = e.sets;
+    li.querySelectorAll(".stepper input").forEach(fitNum);
 
     li.querySelector(".check").onclick = () => {
       state.done[e.id] = !state.done[e.id];
