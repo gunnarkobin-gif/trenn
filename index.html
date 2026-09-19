@@ -53,16 +53,24 @@ li.ex.done .name{color:var(--done)}
 .check svg{width:24px;height:24px;stroke:transparent;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
 li.ex.done .check{background:var(--done);border-color:var(--done)}
 li.ex.done .check svg{stroke:#fff}
-.controls{grid-column:1 / -1;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.ctl{display:flex;align-items:center;justify-content:space-between;background:var(--step);border-radius:10px;padding:4px}
-.ctl.wide{grid-column:1 / -1}
-.ctl button{width:44px;height:44px;border:0;border-radius:8px;background:var(--card);color:var(--ink);font:600 24px "Barlow",sans-serif;line-height:1;padding:0}
-.ctl button:active{transform:scale(.94)}
-.val{text-align:center;min-width:0}
-.val input{width:100%;max-width:80px;border:0;background:transparent;color:var(--ink);text-align:center;
-  font:700 30px "Barlow Condensed","Arial Narrow",sans-serif;padding:0;line-height:1}
-.val input:focus{outline:2px solid var(--plate);border-radius:6px}
-.val span{display:block;font-size:12px;color:var(--muted);line-height:1.1}
+.controls{grid-column:1 / -1;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:8px}
+.ctl{background:var(--step);border-radius:10px;padding:5px 2px 3px}
+.lbl{display:block;text-align:center;font-size:11px;line-height:1;color:var(--muted);margin-bottom:4px;
+  white-space:nowrap;overflow:hidden}
+.stepper{display:flex;align-items:center}
+.stepper button{flex:0 0 26px;height:42px;border:0;border-radius:8px;background:var(--card);color:var(--ink);
+  font:600 19px "Barlow",sans-serif;line-height:1;padding:0}
+.stepper button:active{transform:scale(.92)}
+.stepper input{flex:1 1 auto;width:100%;min-width:0;border:0;background:transparent;color:var(--ink);text-align:center;
+  font:700 19px "Barlow Condensed","Arial Narrow",sans-serif;padding:0;line-height:1}
+.stepper input:focus{outline:2px solid var(--plate);border-radius:6px}
+@media (max-width:344px){
+  .controls{gap:6px}
+  .ctl{padding:4px 1px 2px}
+  .stepper button{flex:0 0 23px;height:40px;font-size:17px}
+  .stepper input{font-size:17px}
+  .lbl{font-size:10px;margin-bottom:3px}
+}
 .del{grid-column:1 / -1;display:none;justify-content:space-between;gap:8px}
 body.editing .del{display:flex}
 body.editing .check{visibility:hidden}
@@ -159,7 +167,7 @@ body.editing .check{visibility:hidden}
 
     <h3>2. Trenni tegemine</h3>
     <ol>
-      <li>Iga harjutuse all on kolm lugejat: <b>kg</b>, <b>kordust</b> ja all laiem <b>seeriat</b>. Muuda neid − ja + nuppudega või vajuta numbrile ja kirjuta uus. Uuel harjutusel on algväärtus 3 seeriat, 10 kordust ja 20 kg — muuda need enda järgi ja need jäävad nii meelde.</li>
+      <li>Iga harjutuse all on ühes reas kolm lugejat: <b>kg</b>, <b>kordust</b> ja <b>seeriat</b>. Muuda neid − ja + nuppudega või vajuta numbrile ja kirjuta uus. Uuel harjutusel on algväärtus 3 seeriat, 10 kordust ja 20 kg — muuda need enda järgi ja need jäävad nii meelde.</li>
       <li>Kui harjutus on tehtud, vajuta paremal olevat ringi. Harjutus kaob nimekirjast ära, nii et alles jääb ainult see, mis veel teha on.</li>
       <li>Tehtud harjutused kogunevad nimekirja alla ribale <b>Tehtud</b> (sulgudes on arv). Vajuta ribale, et need lahti teha — kõrval on kirjas <b>seeriad × kordused × kaal</b>, näiteks 3 × 10 × 20 kg.</li>
       <li>Kui vajutasid kogemata või tahad harjutust korrata, vajuta selle juures <b>Võta tagasi</b> — harjutus tuleb nimekirja tagasi.</li>
@@ -256,19 +264,28 @@ function render(){
       <button class="check" aria-label="Märgi tehtuks"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>
       <div class="controls">
         <div class="ctl">
-          <button data-k="weight" data-d="-1" aria-label="Vähenda kaalu">−</button>
-          <div class="val"><input inputmode="decimal" data-k="weight" aria-label="Kaal"><span>kg</span></div>
-          <button data-k="weight" data-d="1" aria-label="Suurenda kaalu">+</button>
+          <span class="lbl">kg</span>
+          <div class="stepper">
+            <button data-k="weight" data-d="-1" aria-label="Vähenda kaalu">−</button>
+            <input inputmode="decimal" data-k="weight" aria-label="Kaal">
+            <button data-k="weight" data-d="1" aria-label="Suurenda kaalu">+</button>
+          </div>
         </div>
         <div class="ctl">
-          <button data-k="reps" data-d="-1" aria-label="Vähenda kordusi">−</button>
-          <div class="val"><input inputmode="numeric" data-k="reps" aria-label="Kordused"><span>kordust</span></div>
-          <button data-k="reps" data-d="1" aria-label="Suurenda kordusi">+</button>
+          <span class="lbl">kordust</span>
+          <div class="stepper">
+            <button data-k="reps" data-d="-1" aria-label="Vähenda kordusi">−</button>
+            <input inputmode="numeric" data-k="reps" aria-label="Kordused">
+            <button data-k="reps" data-d="1" aria-label="Suurenda kordusi">+</button>
+          </div>
         </div>
-        <div class="ctl wide">
-          <button data-k="sets" data-d="-1" aria-label="Vähenda seeriaid">−</button>
-          <div class="val"><input inputmode="numeric" data-k="sets" aria-label="Seeriad"><span>seeriat</span></div>
-          <button data-k="sets" data-d="1" aria-label="Suurenda seeriaid">+</button>
+        <div class="ctl">
+          <span class="lbl">seeriat</span>
+          <div class="stepper">
+            <button data-k="sets" data-d="-1" aria-label="Vähenda seeriaid">−</button>
+            <input inputmode="numeric" data-k="sets" aria-label="Seeriad">
+            <button data-k="sets" data-d="1" aria-label="Suurenda seeriaid">+</button>
+          </div>
         </div>
       </div>
       <div class="del">
@@ -286,14 +303,14 @@ function render(){
       if (!state.done[e.id]) delete state.done[e.id];
       save(); render();
     };
-    li.querySelectorAll(".ctl button").forEach(b => b.onclick = () => {
+    li.querySelectorAll(".stepper button").forEach(b => b.onclick = () => {
       const k = b.dataset.k, d = +b.dataset.d;
       const step = k === "weight" ? (e.step || 2.5) : 1;
       const min = k === "sets" ? 1 : 0;
       e[k] = Math.max(min, Math.round((e[k] + d * step) * 100) / 100);
       save(); render();
     });
-    li.querySelectorAll(".val input").forEach(inp => {
+    li.querySelectorAll(".stepper input").forEach(inp => {
       inp.onfocus = () => inp.select();
       inp.onchange = () => {
         const k = inp.dataset.k;
