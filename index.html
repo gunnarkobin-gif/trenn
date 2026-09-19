@@ -78,12 +78,14 @@ body.editing .check{visibility:hidden}
   font:800 22px "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.3px}
 .finish button:disabled{opacity:.4}
 .history{margin-top:28px}
-.history h2{font:700 22px "Barlow Condensed","Arial Narrow",sans-serif;margin:0 0 8px}
+.history h2{font:700 22px "Barlow Condensed","Arial Narrow",sans-serif;margin:0 0 8px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .history details{border-top:1px solid var(--line);padding:10px 0}
 .history summary{cursor:pointer;display:flex;justify-content:space-between;font-weight:500}
 .history summary span{color:var(--muted);font-size:14px}
 .history ol{margin:8px 0 0;padding-left:0;list-style:none;color:var(--muted);font-size:15px}
 .history li{display:flex;justify-content:space-between;padding:2px 0}
+.histdel{padding:10px 0 2px}
+.histdel button{height:38px;padding:0 14px;border-radius:10px;border:1px solid var(--danger);background:transparent;color:var(--danger);font:500 15px "Barlow",sans-serif}
 .toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);opacity:0;
   background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:500;transition:all .25s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -216,10 +218,20 @@ function render(){
 
   const h = $("#history");
   if (!state.log.length){ h.innerHTML = ""; return; }
-  h.innerHTML = "<h2>Varasemad trennid</h2>";
-  state.log.slice(0, 20).forEach(s => {
+  h.innerHTML = `<h2>Varasemad trennid<button class="link" type="button" id="clearLog">Kustuta kõik</button></h2>`;
+  h.querySelector("#clearLog").onclick = () => {
+    if (!confirm(`Kustutada kõik ${state.log.length} varasemat trenni? Seda ei saa tagasi võtta.`)) return;
+    state.log = [];
+    save(); render(); toast("Ajalugu kustutatud");
+  };
+  state.log.slice(0, 20).forEach((s, si) => {
     const d = document.createElement("details");
-    d.innerHTML = `<summary>${fmtDate(s.date)}<span>${s.items.length} harjutust</span></summary><ol></ol>`;
+    d.innerHTML = `<summary>${fmtDate(s.date)}<span>${s.items.length} harjutust</span></summary><ol></ol><div class="histdel"><button type="button">Kustuta see trenn</button></div>`;
+    d.querySelector(".histdel button").onclick = () => {
+      if (!confirm(`Kustutada ${fmtDate(s.date)} trenn?`)) return;
+      state.log.splice(si, 1);
+      save(); render(); toast("Trenn kustutatud");
+    };
     const ol = d.querySelector("ol");
     s.items.forEach(it => {
       const li = document.createElement("li");
