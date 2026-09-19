@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Trenn">
+<title>Trenn</title>
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAACZElEQVR4nO3dPU7DMACAUYq4BqzcBs7KbWDlJGyIoV/6h2tHem/OYFtf08pW0sPz2+cDHPM4ewCsSxwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIH6Wn2AI74/njdvuDl/es+I/lfu5vXYam/Kz+5fH+ttpQbdjovXyukheK46ON1xfWz7HdeC8XBasRBEgdJHCRxkMRBEgdJHKThZysbWzrr7BMvbtYajr1zbG/2rbMVuLKJazgwjnPGrY9tc9fQbw6SOEjiIImDJA6SOEjiIImDJA6SOEjiIA18qMm5yd0MOpt15yCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI8181+XtodMVB3S4eqLxlXnMPL905SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYM0MI5zDj52cTgy0dw1HHvn2B63Ms4xcQ2Hn8oq4Haz1tBvDpI4SOIgiYMkDpI4SOIgiYO0UByXbvXsZXttv/NaKA5WM/Btglc7+STPOp+ti+xuXivGwSJ8rZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRykHwexUkcFOz4oAAAAAElFTkSuQmCC">
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAACZElEQVR4nO3dPU7DMACAUYq4BqzcBs7KbWDlJGyIoV/6h2tHem/OYFtf08pW0sPz2+cDHPM4ewCsSxwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIH6Wn2AI74/njdvuDl/es+I/lfu5vXYam/Kz+5fH+ttpQbdjovXyukheK46ON1xfWz7HdeC8XBasRBEgdJHCRxkMRBEgdJHKThZysbWzrr7BMvbtYajr1zbG/2rbMVuLKJazgwjnPGrY9tc9fQbw6SOEjiIImDJA6SOEjiIImDJA6SOEjiIA18qMm5yd0MOpt15yCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI8181+XtodMVB3S4eqLxlXnMPL905SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYM0MI5zDj52cTgy0dw1HHvn2B63Ms4xcQ2Hn8oq4Haz1tBvDpI4SOIgiYMkDpI4SOIgiYO0UByXbvXsZXttv/NaKA5WM/Btglc7+STPOp+ti+xuXivGwSJ8rZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRykHwexUkcFOz4oAAAAAElFTkSuQmCC">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E9ECE8; --card:#F8F9F6; --ink:#16191D; --muted:#6B7278; --line:#D3D8D2;
+  --plate:#1D4ED8; --plate-ink:#fff; --done:#2E7D4F; --done-bg:#DCEBDF; --danger:#C0342B;
+  --step:#E1E5E0;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121417; --card:#1C1F23; --ink:#EEF0EC; --muted:#8C949B; --line:#2B3036;
+    --plate:#4F7DF5; --plate-ink:#fff; --done:#5BBE84; --done-bg:#1E3027; --danger:#EF6A60;
+    --step:#262A30;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121417; --card:#1C1F23; --ink:#EEF0EC; --muted:#8C949B; --line:#2B3036;
+  --plate:#4F7DF5; --plate-ink:#fff; --done:#5BBE84; --done-bg:#1E3027; --danger:#EF6A60;
+  --step:#262A30;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font-family:"Barlow",-apple-system,"Helvetica Neue",Arial,sans-serif;font-size:16px;line-height:1.4;
+  padding:env(safe-area-inset-top) 0 calc(110px + env(safe-area-inset-bottom));min-height:100vh}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px}
+header{display:flex;align-items:flex-end;justify-content:space-between;padding:22px 0 14px}
+h1{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:800;font-size:44px;line-height:.9;margin:0;letter-spacing:-.5px}
+.sub{color:var(--muted);font-size:14px;margin-top:6px}
+.progress{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:28px;text-align:right;line-height:1}
+.progress small{display:block;font-family:"Barlow",sans-serif;font-weight:500;font-size:12px;color:var(--muted)}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:16px}
+.bar i{display:block;height:100%;width:0;background:var(--done);transition:width .3s}
+.toolbar{display:flex;justify-content:flex-end;margin-bottom:8px}
+.link{background:none;border:0;color:var(--plate);font:600 15px "Barlow",sans-serif;padding:6px 2px}
+ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+li.ex{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 12px 12px 14px;
+  display:grid;grid-template-columns:1fr auto;gap:10px 12px;align-items:center;transition:background .2s,border-color .2s}
+li.ex.done{background:var(--done-bg);border-color:transparent}
+.name{font-weight:600;font-size:18px;overflow-wrap:anywhere}
+li.ex.done .name{color:var(--done)}
+.check{width:48px;height:48px;border-radius:50%;border:2px solid var(--line);background:transparent;display:grid;place-items:center;padding:0}
+.check svg{width:24px;height:24px;stroke:transparent;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+li.ex.done .check{background:var(--done);border-color:var(--done)}
+li.ex.done .check svg{stroke:#fff}
+.controls{grid-column:1 / -1;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ctl{display:flex;align-items:center;justify-content:space-between;background:var(--step);border-radius:10px;padding:4px}
+.ctl button{width:44px;height:44px;border:0;border-radius:8px;background:var(--card);color:var(--ink);font:600 24px "Barlow",sans-serif;line-height:1;padding:0}
+.ctl button:active{transform:scale(.94)}
+.val{text-align:center;min-width:0}
+.val input{width:100%;max-width:80px;border:0;background:transparent;color:var(--ink);text-align:center;
+  font:700 30px "Barlow Condensed","Arial Narrow",sans-serif;padding:0;line-height:1}
+.val input:focus{outline:2px solid var(--plate);border-radius:6px}
+.val span{display:block;font-size:12px;color:var(--muted);line-height:1.1}
+.del{grid-column:1 / -1;display:none;justify-content:space-between;gap:8px}
+body.editing .del{display:flex}
+body.editing .check{visibility:hidden}
+.del button{flex:1;height:40px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--ink);font:500 15px "Barlow",sans-serif}
+.del button.rm{color:var(--danger);border-color:var(--danger)}
+.add{display:flex;gap:8px;margin-top:14px}
+.add input{flex:1;min-width:0;height:52px;border-radius:12px;border:1px dashed var(--muted);background:transparent;color:var(--ink);font:500 17px "Barlow",sans-serif;padding:0 14px}
+.add input:focus{outline:none;border-style:solid;border-color:var(--plate)}
+.add button{height:52px;padding:0 18px;border-radius:12px;border:0;background:var(--ink);color:var(--bg);font:600 16px "Barlow",sans-serif}
+.empty{color:var(--muted);text-align:center;padding:28px 12px;border:1px dashed var(--line);border-radius:14px}
+.finish{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+  background:linear-gradient(to top,var(--bg) 70%,transparent)}
+.finish button{display:block;width:100%;max-width:528px;margin:0 auto;height:58px;border:0;border-radius:14px;background:var(--plate);color:var(--plate-ink);
+  font:800 22px "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.3px}
+.finish button:disabled{opacity:.4}
+.history{margin-top:28px}
+.history h2{font:700 22px "Barlow Condensed","Arial Narrow",sans-serif;margin:0 0 8px}
+.history details{border-top:1px solid var(--line);padding:10px 0}
+.history summary{cursor:pointer;display:flex;justify-content:space-between;font-weight:500}
+.history summary span{color:var(--muted);font-size:14px}
+.history ol{margin:8px 0 0;padding-left:0;list-style:none;color:var(--muted);font-size:15px}
+.history li{display:flex;justify-content:space-between;padding:2px 0}
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);opacity:0;
+  background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:500;transition:all .25s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.sync{font-size:12px;color:var(--muted);text-align:center;margin-top:18px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Trenn</h1>
+      <div class="sub" id="last">Esimene trenn</div>
+    </div>
+    <div class="progress" id="prog">0/0<small>tehtud</small></div>
+  </header>
+  <div class="bar"><i id="barfill"></i></div>
+  <div class="toolbar"><button class="link" id="editBtn">Muuda</button></div>
+  <ul id="list"></ul>
+  <form class="add" id="addForm" autocomplete="off">
+    <input id="newName" placeholder="Uus harjutus, nt Kükk" enterkeyhint="done">
+    <button type="submit">Lisa</button>
+  </form>
+  <section class="history" id="history"></section>
+  <div class="sync" id="sync"></div>
+</div>
+<div class="finish"><button id="finishBtn">Trenn tehtud</button></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const LS_KEY = "trenn-state-v1";
+let state = { exercises: [], done: {}, log: [] };
+let dbRef = null, saveTimer = null;
+
+const $ = s => document.querySelector(s);
+const uid = () => Math.random().toString(36).slice(2, 10);
+const fmtKg = n => (Math.round(n * 100) / 100).toString().replace(".", ",");
+const parseNum = s => { const n = parseFloat(String(s).replace(",", ".")); return isFinite(n) ? n : 0; };
+const fmtDate = iso => new Date(iso).toLocaleDateString("et-EE", { weekday: "short", day: "numeric", month: "long" });
+
+function loadLocal(){
+  try { const r = localStorage.getItem(LS_KEY); if (r) return JSON.parse(r); } catch(e){}
+  return null;
+}
+function save(){
+  try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e){}
+  clearTimeout(saveTimer);
+  if (dbRef) saveTimer = setTimeout(async () => {
+    try { await dbRef.set(JSON.parse(JSON.stringify(state))); $("#sync").textContent = "Salvestatud"; }
+    catch(e){ $("#sync").textContent = "Salvestatud ainult selles seadmes"; }
+  }, 500);
+}
+function toast(msg){
+  const t = $("#toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 1800);
+}
+
+function render(){
+  const list = $("#list"); list.innerHTML = "";
+  const ex = state.exercises;
+  if (!ex.length){
+    list.innerHTML = '<li class="empty">Lisa esimene harjutus allpool. Kaal ja kordused jäävad meelde järgmiseks korraks.</li>';
+  }
+  ex.forEach((e, i) => {
+    const li = document.createElement("li");
+    li.className = "ex" + (state.done[e.id] ? " done" : "");
+    li.innerHTML = `
+      <div class="name"></div>
+      <button class="check" aria-label="Märgi tehtuks"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>
+      <div class="controls">
+        <div class="ctl">
+          <button data-k="weight" data-d="-1" aria-label="Vähenda kaalu">−</button>
+          <div class="val"><input inputmode="decimal" data-k="weight" aria-label="Kaal"><span>kg</span></div>
+          <button data-k="weight" data-d="1" aria-label="Suurenda kaalu">+</button>
+        </div>
+        <div class="ctl">
+          <button data-k="reps" data-d="-1" aria-label="Vähenda kordusi">−</button>
+          <div class="val"><input inputmode="numeric" data-k="reps" aria-label="Kordused"><span>kordust</span></div>
+          <button data-k="reps" data-d="1" aria-label="Suurenda kordusi">+</button>
+        </div>
+      </div>
+      <div class="del">
+        <button data-a="up" ${i===0?"disabled":""}>Üles</button>
+        <button data-a="rename">Nimeta</button>
+        <button data-a="rm" class="rm">Kustuta</button>
+      </div>`;
+    li.querySelector(".name").textContent = e.name;
+    li.querySelector('input[data-k="weight"]').value = fmtKg(e.weight);
+    li.querySelector('input[data-k="reps"]').value = e.reps;
+
+    li.querySelector(".check").onclick = () => {
+      state.done[e.id] = !state.done[e.id];
+      if (!state.done[e.id]) delete state.done[e.id];
+      save(); render();
+    };
+    li.querySelectorAll(".ctl button").forEach(b => b.onclick = () => {
+      const k = b.dataset.k, d = +b.dataset.d;
+      const step = k === "weight" ? (e.step || 2.5) : 1;
+      e[k] = Math.max(0, Math.round((e[k] + d * step) * 100) / 100);
+      save(); render();
+    });
+    li.querySelectorAll(".val input").forEach(inp => {
+      inp.onfocus = () => inp.select();
+      inp.onchange = () => {
+        const k = inp.dataset.k;
+        e[k] = Math.max(0, k === "reps" ? Math.round(parseNum(inp.value)) : parseNum(inp.value));
+        save(); render();
+      };
+    });
+    li.querySelector('[data-a="rm"]').onclick = () => {
+      if (!confirm(`Kustutada „${e.name}“?`)) return;
+      state.exercises = ex.filter(x => x.id !== e.id); delete state.done[e.id];
+      save(); render();
+    };
+    li.querySelector('[data-a="rename"]').onclick = () => {
+      const n = prompt("Harjutuse nimi", e.name);
+      if (n && n.trim()){ e.name = n.trim(); save(); render(); }
+    };
+    li.querySelector('[data-a="up"]').onclick = () => {
+      if (i === 0) return; [ex[i-1], ex[i]] = [ex[i], ex[i-1]]; save(); render();
+    };
+    list.appendChild(li);
+  });
+
+  const doneCount = ex.filter(e => state.done[e.id]).length;
+  $("#prog").innerHTML = `${doneCount}/${ex.length}<small>tehtud</small>`;
+  $("#barfill").style.width = ex.length ? (doneCount / ex.length * 100) + "%" : "0";
+  $("#finishBtn").disabled = doneCount === 0;
+  $("#last").textContent = state.log.length ? "Eelmine trenn: " + fmtDate(state.log[0].date) : "Esimene trenn";
+
+  const h = $("#history");
+  if (!state.log.length){ h.innerHTML = ""; return; }
+  h.innerHTML = "<h2>Varasemad trennid</h2>";
+  state.log.slice(0, 20).forEach(s => {
+    const d = document.createElement("details");
+    d.innerHTML = `<summary>${fmtDate(s.date)}<span>${s.items.length} harjutust</span></summary><ol></ol>`;
+    const ol = d.querySelector("ol");
+    s.items.forEach(it => {
+      const li = document.createElement("li");
+      const a = document.createElement("span"); a.textContent = it.name;
+      const b = document.createElement("span"); b.textContent = `${fmtKg(it.weight)} kg × ${it.reps}`;
+      li.append(a, b); ol.appendChild(li);
+    });
+    h.appendChild(d);
+  });
+}
+
+$("#addForm").onsubmit = ev => {
+  ev.preventDefault();
+  const n = $("#newName").value.trim(); if (!n) return;
+  const prev = state.exercises[state.exercises.length - 1];
+  state.exercises.push({ id: uid(), name: n, weight: 20, reps: 10 });
+  $("#newName").value = ""; $("#newName").blur();
+  save(); render();
+  toast("Lisatud: " + n);
+};
+$("#editBtn").onclick = () => {
+  const on = document.body.classList.toggle("editing");
+  $("#editBtn").textContent = on ? "Valmis" : "Muuda";
+};
+$("#finishBtn").onclick = () => {
+  const items = state.exercises.filter(e => state.done[e.id]).map(e => ({ name: e.name, weight: e.weight, reps: e.reps }));
+  if (!items.length) return;
+  const skipped = state.exercises.length - items.length;
+  if (skipped && !confirm(`${skipped} harjutust märkimata. Lõpetan trenni ikkagi?`)) return;
+  state.log.unshift({ date: new Date().toISOString(), items });
+  state.log = state.log.slice(0, 200);
+  state.done = {};
+  save(); render();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  toast("Trenn salvestatud");
+};
+
+(async () => {
+  const local = loadLocal();
+  if (local) { state = Object.assign({ exercises: [], done: {}, log: [] }, local); }
+  render();
+  if (!window.claude || !window.claude.use) { $("#sync").textContent = "Salvestatud selles seadmes"; return; }
+  try {
+    const [db, user] = await Promise.all([claude.use("db"), claude.use("user")]);
+    const id = user ? await user.id() : null;
+    if (!db || !id) { $("#sync").textContent = "Salvestatud selles seadmes"; return; }
+    dbRef = db.doc("data/users/" + id + "/gym");
+    const snap = await dbRef.get();
+    if (snap.exists) {
+      const remote = snap.data();
+      state = { exercises: remote.exercises || [], done: remote.done || {}, log: remote.log || [] };
+      state = JSON.parse(JSON.stringify(state));
+      try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e){}
+      render();
+    } else if (state.exercises.length || state.log.length) {
+      save();
+    }
+    $("#sync").textContent = "Sünkroonitud sinu kontoga";
+  } catch (e) {
+    $("#sync").textContent = "Salvestatud selles seadmes";
+  }
+})();
+</script>
+</body>
+</html>
