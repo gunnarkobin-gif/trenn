@@ -55,6 +55,7 @@ li.ex.done .check{background:var(--done);border-color:var(--done)}
 li.ex.done .check svg{stroke:#fff}
 .controls{grid-column:1 / -1;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .ctl{display:flex;align-items:center;justify-content:space-between;background:var(--step);border-radius:10px;padding:4px}
+.ctl.wide{grid-column:1 / -1}
 .ctl button{width:44px;height:44px;border:0;border-radius:8px;background:var(--card);color:var(--ink);font:600 24px "Barlow",sans-serif;line-height:1;padding:0}
 .ctl button:active{transform:scale(.94)}
 .val{text-align:center;min-width:0}
@@ -158,9 +159,9 @@ body.editing .check{visibility:hidden}
 
     <h3>2. Trenni tegemine</h3>
     <ol>
-      <li>Iga harjutuse all on kaks lugejat: <b>kg</b> ja <b>kordust</b>. Muuda neid − ja + nuppudega või vajuta numbrile ja kirjuta uus.</li>
+      <li>Iga harjutuse all on kolm lugejat: <b>kg</b>, <b>kordust</b> ja all laiem <b>seeriat</b>. Muuda neid − ja + nuppudega või vajuta numbrile ja kirjuta uus. Uuel harjutusel on algväärtus 3 seeriat, 10 kordust ja 20 kg — muuda need enda järgi ja need jäävad nii meelde.</li>
       <li>Kui harjutus on tehtud, vajuta paremal olevat ringi. Harjutus kaob nimekirjast ära, nii et alles jääb ainult see, mis veel teha on.</li>
-      <li>Tehtud harjutused kogunevad nimekirja alla ribale <b>Tehtud</b> (sulgudes on arv). Vajuta ribale, et need lahti teha — kõrval on ka kaal ja kordused, mille sa just tegid.</li>
+      <li>Tehtud harjutused kogunevad nimekirja alla ribale <b>Tehtud</b> (sulgudes on arv). Vajuta ribale, et need lahti teha — kõrval on kirjas <b>seeriad × kordused × kaal</b>, näiteks 3 × 10 × 20 kg.</li>
       <li>Kui vajutasid kogemata või tahad harjutust korrata, vajuta selle juures <b>Võta tagasi</b> — harjutus tuleb nimekirja tagasi.</li>
       <li>Kui oled valmis, vajuta all <b>Trenn tehtud</b>. Trenn läheb ajalukku ja kõik harjutused tulevad järgmiseks korraks nimekirja tagasi — kaal ja kordused jäävad meelde.</li>
     </ol>
@@ -169,7 +170,7 @@ body.editing .check{visibility:hidden}
     <p>Vajuta üleval paremal <b>Muuda</b>. Iga harjutuse alla tekivad nupud <b>Üles</b> (järjekorra muutmiseks), <b>Nimeta</b> ja <b>Kustuta</b>. Muutmise ajal on näha kõik harjutused, ka juba tehtud, nii et saad ka neid parandada. Lõpetuseks vajuta <b>Valmis</b>.</p>
 
     <h3>4. Varasemad trennid</h3>
-    <p>Iga trenn avaneb klõpsuga — näed, mis harjutused, mis kaaluga ja mitu kordust tehtud said. Trenni all on <b>Kustuta see trenn</b> ja pealkirja kõrval <b>Kustuta kõik</b>.</p>
+    <p>Iga trenn avaneb klõpsuga — näed, mis harjutused tehtud said, kujul <b>seeriad × kordused × kaal</b> (vanematel trennidel, mis on tehtud enne seeriate lisamist, on ainult kordused ja kaal). Trenni all on <b>Kustuta see trenn</b> ja pealkirja kõrval <b>Kustuta kõik</b>.</p>
 
     <h3>5. Avaekraanile lisamine</h3>
     <p><b>iPhone:</b> ava see leht Safaris → jaga-nupp (ruut noolega) → <b>Lisa avaekraanile</b>.<br>
@@ -210,6 +211,14 @@ const uid = () => Math.random().toString(36).slice(2, 10);
 const fmtKg = n => (Math.round(n * 100) / 100).toString().replace(".", ",");
 const parseNum = s => { const n = parseFloat(String(s).replace(",", ".")); return isFinite(n) ? n : 0; };
 const fmtDate = iso => new Date(iso).toLocaleDateString("et-EE", { weekday: "short", day: "numeric", month: "long" });
+const fmtSet = it => (it.sets ? it.sets + " × " : "") + it.reps + " × " + fmtKg(it.weight) + " kg";
+const DEFAULT_SETS = 3;
+function migrate(s){
+  (s && s.exercises || []).forEach(e => {
+    if (typeof e.sets !== "number" || !(e.sets > 0)) e.sets = DEFAULT_SETS;
+  });
+  return s;
+}
 
 function loadLocal(){
   try { const r = localStorage.getItem(LS_KEY); if (r) return JSON.parse(r); } catch(e){}
@@ -256,6 +265,11 @@ function render(){
           <div class="val"><input inputmode="numeric" data-k="reps" aria-label="Kordused"><span>kordust</span></div>
           <button data-k="reps" data-d="1" aria-label="Suurenda kordusi">+</button>
         </div>
+        <div class="ctl wide">
+          <button data-k="sets" data-d="-1" aria-label="Vähenda seeriaid">−</button>
+          <div class="val"><input inputmode="numeric" data-k="sets" aria-label="Seeriad"><span>seeriat</span></div>
+          <button data-k="sets" data-d="1" aria-label="Suurenda seeriaid">+</button>
+        </div>
       </div>
       <div class="del">
         <button data-a="up" ${i===0?"disabled":""}>Üles</button>
@@ -265,6 +279,7 @@ function render(){
     li.querySelector(".name").textContent = e.name;
     li.querySelector('input[data-k="weight"]').value = fmtKg(e.weight);
     li.querySelector('input[data-k="reps"]').value = e.reps;
+    li.querySelector('input[data-k="sets"]').value = e.sets;
 
     li.querySelector(".check").onclick = () => {
       state.done[e.id] = !state.done[e.id];
@@ -274,14 +289,16 @@ function render(){
     li.querySelectorAll(".ctl button").forEach(b => b.onclick = () => {
       const k = b.dataset.k, d = +b.dataset.d;
       const step = k === "weight" ? (e.step || 2.5) : 1;
-      e[k] = Math.max(0, Math.round((e[k] + d * step) * 100) / 100);
+      const min = k === "sets" ? 1 : 0;
+      e[k] = Math.max(min, Math.round((e[k] + d * step) * 100) / 100);
       save(); render();
     });
     li.querySelectorAll(".val input").forEach(inp => {
       inp.onfocus = () => inp.select();
       inp.onchange = () => {
         const k = inp.dataset.k;
-        e[k] = Math.max(0, k === "reps" ? Math.round(parseNum(inp.value)) : parseNum(inp.value));
+        const whole = (k === "reps" || k === "sets");
+        e[k] = Math.max(k === "sets" ? 1 : 0, whole ? Math.round(parseNum(inp.value)) : parseNum(inp.value));
         save(); render();
       };
     });
@@ -312,7 +329,7 @@ function render(){
       const li = document.createElement("li");
       li.innerHTML = `<span class="dn"></span><span class="dv"></span><button type="button">Võta tagasi</button>`;
       li.querySelector(".dn").textContent = e.name;
-      li.querySelector(".dv").textContent = `${fmtKg(e.weight)} kg × ${e.reps}`;
+      li.querySelector(".dv").textContent = fmtSet(e);
       li.querySelector("button").onclick = () => { delete state.done[e.id]; save(); render(); };
       dul.appendChild(li);
     });
@@ -345,7 +362,7 @@ function render(){
     s.items.forEach(it => {
       const li = document.createElement("li");
       const a = document.createElement("span"); a.textContent = it.name;
-      const b = document.createElement("span"); b.textContent = `${fmtKg(it.weight)} kg × ${it.reps}`;
+      const b = document.createElement("span"); b.textContent = fmtSet(it);
       li.append(a, b); ol.appendChild(li);
     });
     h.appendChild(d);
@@ -356,7 +373,7 @@ $("#addForm").onsubmit = ev => {
   ev.preventDefault();
   const n = $("#newName").value.trim(); if (!n) return;
   const prev = state.exercises[state.exercises.length - 1];
-  state.exercises.push({ id: uid(), name: n, weight: 20, reps: 10 });
+  state.exercises.push({ id: uid(), name: n, weight: 20, reps: 10, sets: DEFAULT_SETS });
   $("#newName").value = ""; $("#newName").blur();
   save(); render();
   toast("Lisatud: " + n);
@@ -367,7 +384,7 @@ $("#editBtn").onclick = () => {
   render();
 };
 $("#finishBtn").onclick = () => {
-  const items = state.exercises.filter(e => state.done[e.id]).map(e => ({ name: e.name, weight: e.weight, reps: e.reps }));
+  const items = state.exercises.filter(e => state.done[e.id]).map(e => ({ name: e.name, weight: e.weight, reps: e.reps, sets: e.sets }));
   if (!items.length) return;
   const skipped = state.exercises.length - items.length;
   if (skipped && !confirm(`${skipped} harjutust märkimata. Lõpetan trenni ikkagi?`)) return;
@@ -405,6 +422,7 @@ $("#impFile").onchange = async ev => {
       done: (s.done && typeof s.done === "object") ? s.done : {},
       log: s.log
     };
+    migrate(state);
     save(); render();
     window.scrollTo({ top: 0, behavior: "smooth" });
     toast("Varukoopia laaditud");
@@ -416,6 +434,7 @@ $("#impFile").onchange = async ev => {
 (async () => {
   const local = loadLocal();
   if (local) { state = Object.assign({ exercises: [], done: {}, log: [] }, local); }
+  migrate(state);
   render();
   if (!window.claude || !window.claude.use) { $("#sync").textContent = "Salvestatud selles seadmes"; return; }
   try {
@@ -427,7 +446,7 @@ $("#impFile").onchange = async ev => {
     if (snap.exists) {
       const remote = snap.data();
       state = { exercises: remote.exercises || [], done: remote.done || {}, log: remote.log || [] };
-      state = JSON.parse(JSON.stringify(state));
+      state = migrate(JSON.parse(JSON.stringify(state)));
       try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e){}
       render();
     } else if (state.exercises.length || state.log.length) {
